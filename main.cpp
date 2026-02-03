@@ -35,23 +35,46 @@ int main() {
 	//	0.0f, 0.5f, 0.0f 
 	//};
 
-	//square vertices coords
-	float vertices[] = {
-		0.5f, 0.5f, 0.0f, //top right		- 0
-		0.5f, -0.5f, 0.0f, //bottom right	- 1
-		-0.5f, -0.5f, 0.0f, //bottom left	- 2
-		-0.5f, 0.5f, 0.0f, //top left		- 3
+	//exercise triangles vertices coords
+	//float vertices[] = {
+	//	-0.8f, -0.5f, 0.0f,
+	//	-0.1f, -0.5f, 0.0f,
+	//	-0.4f, 0.5f, 0.0f,
+	//	0.8f, -0.5f, 0.0f,
+	//	0.1f, -0.5f, 0.0f,
+	//	0.4f, 0.5f, 0.0f
+	//};
+
+	//exercise triangle one
+	float firstTriangle[] = {
+		-0.9f, -0.5f, 0.0f,  // left 
+        -0.0f, -0.5f, 0.0f,  // right
+        -0.45f, 0.5f, 0.0f,  // top 
+	};
+	//exercise triangle two
+	float secondTriangle[] = {
+		0.0f, -0.5f, 0.0f,  // left
+		0.9f, -0.5f, 0.0f,  // right
+		0.45f, 0.5f, 0.0f   // top 
 	};
 
-	unsigned int indices[] = {
-		0, 1, 3, //triangle 1
-		1, 2, 3	 //triangle 2
-	};
+	//square vertices coords
+	//float vertices[] = {
+	//	0.5f, 0.5f, 0.0f, //top right		- 0
+	//	0.5f, -0.5f, 0.0f, //bottom right	- 1
+	//	-0.5f, -0.5f, 0.0f, //bottom left	- 2
+	//	-0.5f, 0.5f, 0.0f, //top left		- 3
+	//};
+
+	//unsigned int indices[] = {
+	//	0, 1, 3, //triangle 1
+	//	1, 2, 3	 //triangle 2
+	//};
 
 	//variables
-	unsigned int VBO; //vertex buffer object
-	unsigned int VAO; //vertex array object
-	unsigned int EBO; //element buffer object
+	unsigned int VBOs[2]; //vertex buffer object
+	unsigned int VAOs[2]; //vertex array object
+	//unsigned int EBO; //element buffer object
 	unsigned int vertexShader;
 	unsigned int fragmentShader;
 	unsigned int shaderProgram;
@@ -124,22 +147,22 @@ int main() {
 
 
 	//genrates VBO, VAO and EBO objects
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
+	glGenVertexArrays(2, VAOs);
+	glGenBuffers(2, VBOs);
+	//glGenBuffers(1, &EBO);
 	//bind vertex array
-	glBindVertexArray(VAO);
+	glBindVertexArray(VAOs[0]);
 	//binding VBO to GL_ARRAY_BUFFER
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
 	//function to copy vertex data to buffer's memory
 //•	GL_STREAM_DRAW: the data is set only once and used by the GPU at most a few times.
 //• GL_STATIC_DRAW : the data is set only once and used many times.
 //• GL_DYNAMIC_DRAW : the data is changed a lot and used many times.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(firstTriangle), firstTriangle, GL_STATIC_DRAW);
 
 	//we bind the indices similarly with a static draw to EBO
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// 1. then set the vertex attributes pointers
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -157,6 +180,15 @@ int main() {
 	// it's not directly necessary.
 	glBindVertexArray(0);
 
+	//second VBO and VAO setup
+	glBindVertexArray(VAOs[1]);
+	glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(secondTriangle), secondTriangle, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -168,10 +200,15 @@ int main() {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		//first triangle and vao
 		glUseProgram(shaderProgram);
-		glBindVertexArray(VAO);
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(VAOs[0]);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//second triangle and vao
+		glBindVertexArray(VAOs[1]);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawArrays(GL_TRIANGLES, 0, 6); two triangle exercise
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		//glBindVertexArray(0);
 
 		// glfw: swap buffers and poll IO events
@@ -180,9 +217,9 @@ int main() {
 	}
 
 	//clean up
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	glDeleteVertexArrays(2, VAOs);
+	glDeleteBuffers(2, VBOs);
+	//glDeleteBuffers(1, &EBO);
 	glDeleteProgram(shaderProgram);
 
 	glfwTerminate();
