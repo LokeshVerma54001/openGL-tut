@@ -143,6 +143,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Users\HP\Downloads\glfw-3.4\include\GLFW\glfw3.h" />
+    <ClInclude Include="shader_s.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\shader.fs" />
+    <None Include="shaders\shader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

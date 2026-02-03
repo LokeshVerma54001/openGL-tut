@@ -1,6 +1,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <learnopengl/shader_s.h>
+
 using namespace std;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -8,28 +10,6 @@ void processInput(GLFWwindow* window);
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-
-const char* vertexShaderSource = 
-	"#version 330 core\n"
-	"layout (location = 0) in vec3 aPos;\n" //position
-	"layout (location = 1) in vec3 aColor;\n" //color
-	"out vec3 ourColor;\n"
-	"void main()\n"
-	"{\n"
-	" gl_Position = vec4(aPos, 1.0);\n"
-	"ourColor = aColor;\n"
-	"}\0";
-
-const char* fragmentShaderSource = 
-	"#version 330 core\n"
-	"out vec4 FragColor;\n"
-	"in vec3 ourColor;\n"
-	"void main()\n"
-	"{\n"
-	"FragColor = vec4(ourColor, 1.0);"
-	"}\n\0";
-
-
 
 int main() {
 
@@ -45,12 +25,7 @@ int main() {
 	//variables
 	unsigned int VBO; //vertex buffer object
 	unsigned int VAO; //vertex array object
-	unsigned int vertexShader;
-	unsigned int fragmentShader;
-	unsigned int shaderProgram;
-	int success;
-	char infoLog[512];
-	
+
 
 	glfwInit(); // inits the glfw window
 	//telling glfw the major and minor version of openGl 
@@ -77,33 +52,8 @@ int main() {
 
 
 
-	//creating a vertex shader
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	//attaching the shader source to shader object
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	//compiling the shaders
-	glCompileShader(vertexShader);
-	//shaders compilation debugging
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		cout << "Error::Shader::Vertex::Compilation_failed\n" << infoLog << endl;
-	}
-
-	//creating fragment shader(similar process)
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	//creating shader program
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	//shader objects cleanup
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	//creating a shader object from shader class
+	Shader ourShader("./shaders/shader.vs", "./shaders/shader.fs");
 
 
 
@@ -137,7 +87,8 @@ int main() {
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	glUseProgram(shaderProgram);
+	
+	//ourShader.setFloat("someUniform", 1.0f);
 
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -151,6 +102,8 @@ int main() {
 
 
 		//draw triangle
+		//using shader object program
+		ourShader.use();
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -164,7 +117,7 @@ int main() {
 	//clean up
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	glDeleteProgram(shaderProgram);
+	//glDeleteProgram(shaderProgram);
 
 	glfwTerminate();
 	return 0;
