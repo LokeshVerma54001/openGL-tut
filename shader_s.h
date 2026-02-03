@@ -41,6 +41,10 @@ public:
 		catch (ifstream::failure e) {
 			cout << "Error::Shader::File_not_successfully_read" << endl;
 		}
+		if (vertexCode.empty() || fragmentCode.empty()) {
+			cout << "ERROR::SHADER::EMPTY_SOURCE\n";
+			return;
+		}
 		const char* vShaderCode = vertexCode.c_str();
 		const char* fShaderCode = fragmentCode.c_str();
 
@@ -67,7 +71,7 @@ public:
 		glCompileShader(fragment);
 		glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
 		if (!success) {
-			glGetShaderInfoLog(vertex, 512, NULL, infoLog);
+			glGetShaderInfoLog(fragment, 512, NULL, infoLog);
 			cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << endl;
 		}
 
