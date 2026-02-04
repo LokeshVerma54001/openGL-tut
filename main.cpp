@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <learnopengl/shader_s.h>
+#include <stb_image.h>
 
 using namespace std;
 
@@ -13,18 +14,25 @@ const unsigned int SCR_HEIGHT = 600;
 
 int main() {
 
-	//triangles vertices coords
+	//square vertices coords and texture coords
 	float vertices[] = {
-		// positions // colors
-		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left
-		0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f // top
+		// positions // colors // texture coords
+		0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right		- 0
+		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right	- 1
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left	- 2
+		-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f // top left			- 3
+	};
+
+	unsigned int indices[] = {
+		0, 1, 3,
+		1, 2, 3
 	};
 
 
 	//variables
 	unsigned int VBO; //vertex buffer object
 	unsigned int VAO; //vertex array object
+	unsigned int EBO; //element buffer object
 
 
 	glfwInit(); // inits the glfw window
@@ -52,6 +60,8 @@ int main() {
 
 
 
+
+
 	//creating a shader object from shader class
 	Shader ourShader("./shaders/shader.vs", "./shaders/shader.fs");
 
@@ -60,6 +70,7 @@ int main() {
 	//genrates VBO, VAO and EBO objects
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
 	//bind vertex array
 	glBindVertexArray(VAO);
 	//binding VBO to GL_ARRAY_BUFFER
@@ -70,24 +81,61 @@ int main() {
 //• GL_DYNAMIC_DRAW : the data is changed a lot and used many times.
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	//ebo bind
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	//position attribute - at index 0
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	//color attribute - at index 1
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+
+	//texture attributes - at index 2
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
 
 
+	//------------------------texture stuff --------------------------
+	//texture Input
+	int width, height, nrChannels;
+	unsigned char* data = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
+
+	//texture geneartion
+	unsigned int texture;
+	glGenTextures(1, &texture);//1 for how many textures to generate
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	if (data) {
+		//first 0 signifies the minmap level
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);//for texture  generating minmaps
+	}
+	else {
+		cout << "Failled to load textures" << endl;
+	}
+
+	//image object cleanup
+	stbi_image_free(data);
+	//---------------------------------------------
+
+
+
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	float offset = 0.5f;
 	
 
 	//render loop
@@ -100,13 +148,14 @@ int main() {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-
-		//draw triangle
+		//bind textures
+		glBindTexture(GL_TEXTURE_2D, texture);
+		
 		//using shader object program
 		ourShader.use();
-		ourShader.setFloat("xOffset", offset);
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//draw square
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 
 
@@ -118,7 +167,7 @@ int main() {
 	//clean up
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	//glDeleteProgram(shaderProgram);
+	
 
 	glfwTerminate();
 	return 0;
