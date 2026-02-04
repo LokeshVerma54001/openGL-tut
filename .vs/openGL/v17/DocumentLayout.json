@@ -58,8 +58,7 @@
               "RelativeToolTip": "shaders\\shader.vs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-02-03T15:46:14.184Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-03T15:46:14.184Z"
             },
             {
               "$type": "Document",
@@ -71,8 +70,7 @@
               "RelativeToolTip": "shaders\\shader.fs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABRAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-02-03T15:46:02.104Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-03T15:46:02.104Z"
             },
             {
               "$type": "Document",
@@ -82,7 +80,7 @@
               "RelativeDocumentMoniker": "main.cpp",
               "ToolTip": "C:\\code\\openGL\\main.cpp",
               "RelativeToolTip": "main.cpp",
-              "ViewState": "AgIAAIgAAAAAAAAAAAAuwKUAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAAAGYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-02-02T09:13:07.441Z",
               "EditorCaption": ""
@@ -97,8 +95,7 @@
               "RelativeToolTip": "shader_s.h",
               "ViewState": "AgIAADwAAAAAAAAAAAAAAF0AAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-02-03T09:59:30.616Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-03T09:59:30.616Z"
             }
           ]
         }

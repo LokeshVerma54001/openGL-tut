@@ -103,6 +103,7 @@ int main() {
 
 
 	//------------------------texture stuff --------------------------
+	stbi_set_flip_vertically_on_load(true);
 	//texture Input
 	int width, height, nrChannels;
 	unsigned char* data = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
