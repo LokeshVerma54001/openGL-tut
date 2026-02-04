@@ -108,9 +108,11 @@ int main() {
 	unsigned char* data = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
 
 	//texture geneartion
-	unsigned int texture;
-	glGenTextures(1, &texture);//1 for how many textures to generate
-	glBindTexture(GL_TEXTURE_2D, texture);
+	unsigned int texture1;
+	unsigned int texture2;
+	glGenTextures(1, &texture1);//1 for how many textures to generate
+
+	glBindTexture(GL_TEXTURE_2D, texture1);
 
 	// set the texture wrapping parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
@@ -125,11 +127,33 @@ int main() {
 		glGenerateMipmap(GL_TEXTURE_2D);//for texture  generating minmaps
 	}
 	else {
-		cout << "Failled to load textures" << endl;
+		cout << "Failled to load texture 1" << endl;
 	}
 
 	//image object cleanup
 	stbi_image_free(data);
+
+
+	glGenTextures(1, &texture2);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	data = stbi_load("texture2.jpg", &width, &height, &nrChannels, 0);
+	if (data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else {
+		cout << "Failed to load texture" << endl;
+	}
+	stbi_image_free(data);
+
 	//---------------------------------------------
 
 
@@ -137,6 +161,9 @@ int main() {
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	
+	ourShader.use();
+	ourShader.setInt("texture1", 0);
+	ourShader.setInt("texture2", 1);
 
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -149,7 +176,11 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//bind textures
-		glBindTexture(GL_TEXTURE_2D, texture);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture1);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture2);
 		
 		//using shader object program
 		ourShader.use();
