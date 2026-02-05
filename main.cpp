@@ -4,6 +4,10 @@
 #include <learnopengl/shader_s.h>
 #include <stb_image.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 using namespace std;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -62,6 +66,18 @@ int main() {
 
 
 
+	//glm matrix/vector calculations-----------------------------
+	//glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+	//glm::mat4 trans = glm::mat4(1.0f);
+	//trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
+	//vec = trans * vec;
+	//cout << vec.x << vec.y << vec.z << endl;
+
+	//trans = glm::mat4(1.0f);
+	////rotating the container on z axis by 45 degress 
+	//trans = glm::rotate(trans, glm::radians(45.0f), glm::vec3(0.0, 0.0, 1.0));
+	//trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
 
 
 	//creating a shader object from shader class
@@ -69,7 +85,7 @@ int main() {
 
 
 
-	//genrates VBO, VAO and EBO objects
+	//genrates VBO, VAO and EBO objects----------------------------
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
@@ -168,8 +184,15 @@ int main() {
 
 	ourShader.use();
 
+	//uniforms stuff
 	ourShader.setInt("texture1", 0);
 	ourShader.setInt("texture2", 1);
+	//getting the transform uniform location 
+	//and sending our defined matrix data
+	//unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+	// 1 is the number of matrices we are trying to send
+	//third argument asks for matrix transpose (row/column swap)
+	//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 	
 
 	//render loop
@@ -189,10 +212,18 @@ int main() {
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
-		
+		//spinning image thing in real time
+		glm::mat4 transform = glm::mat4(1.0f);
+		//transformation are read in reverse
+		//(so its first rotated and then translated to bottom left)
+		transform = glm::translate(transform, glm::vec3(0.5, -0.5f, 0.0f));
+		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 		
 		//using shader object program
 		ourShader.use();
+		//setting transform uniform
+		unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 		ourShader.setFloat("mixVal", mixVal);
 		glBindVertexArray(VAO);
 		//draw square
