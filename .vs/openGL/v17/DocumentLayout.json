@@ -7,7 +7,7 @@
       "RelativeMoniker": "D:0:0:{B099BCD0-C68F-470D-977E-69122D99BFFF}|openGL.vcxproj|solutionrelative:main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B099BCD0-C68F-470D-977E-69122D99BFFF}|openGL.vcxproj|C:\\CODE\\OPENGL\\INCLUDE\\LEARNOPENGL\\SHADER_S.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{B099BCD0-C68F-470D-977E-69122D99BFFF}|openGL.vcxproj|C:\\code\\openGL\\INCLUDE\\LEARNOPENGL\\SHADER_S.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{B099BCD0-C68F-470D-977E-69122D99BFFF}|openGL.vcxproj|solutionrelative:INCLUDE\\LEARNOPENGL\\SHADER_S.H||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
@@ -33,6 +33,14 @@
           "SelectedChildIndex": 6,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "shader_s.h",
@@ -42,16 +50,7 @@
               "RelativeToolTip": "include\\learnopengl\\shader_s.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-02-05T09:37:21.713Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+              "WhenOpened": "2026-02-05T09:37:21.713Z"
             },
             {
               "$type": "Document",
@@ -75,8 +74,7 @@
               "RelativeToolTip": "shaders\\shader.vs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-02-03T15:46:14.184Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-03T15:46:14.184Z"
             },
             {
               "$type": "Document",
@@ -88,8 +86,7 @@
               "RelativeToolTip": "shaders\\shader.fs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-02-03T15:46:02.104Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-03T15:46:02.104Z"
             },
             {
               "$type": "Document",
@@ -99,7 +96,7 @@
               "RelativeDocumentMoniker": "main.cpp",
               "ToolTip": "C:\\code\\openGL\\main.cpp",
               "RelativeToolTip": "main.cpp",
-              "ViewState": "AgIAAN0AAAAAAAAAAAAAAOMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAOkAAAAAAAAAAAAAAPYAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-02-02T09:13:07.441Z",
               "EditorCaption": ""
