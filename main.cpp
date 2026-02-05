@@ -16,17 +16,16 @@ void processInput(GLFWwindow* window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-float mixVal = 0.5f;
 
 int main() {
 
 	//square vertices coords and texture coords
 	float vertices[] = {
-		// positions // colors // texture coords
-		0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 2.0f, 2.0f, // top right		- 0
-		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 2.0f, 0.0f, // bottom right	- 1
-		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left	- 2
-		-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 2.0f // top left			- 3
+		// positions           // texture coords
+		 0.5f,  0.5f, 0.0f,    1.0f, 1.0f, // top right
+		 0.5f, -0.5f, 0.0f,    1.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f,    0.0f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f,    0.0f, 1.0f  // top left 
 	};
 
 	unsigned int indices[] = {
@@ -66,20 +65,6 @@ int main() {
 
 
 
-	//glm matrix/vector calculations-----------------------------
-	//glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-	//glm::mat4 trans = glm::mat4(1.0f);
-	//trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
-	//vec = trans * vec;
-	//cout << vec.x << vec.y << vec.z << endl;
-
-	//trans = glm::mat4(1.0f);
-	////rotating the container on z axis by 45 degress 
-	//trans = glm::rotate(trans, glm::radians(45.0f), glm::vec3(0.0, 0.0, 1.0));
-	//trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-
-
-
 	//creating a shader object from shader class
 	Shader ourShader("./shaders/shader.vs", "./shaders/shader.fs");
 
@@ -104,19 +89,12 @@ int main() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	//position attribute - at index 0
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	//color attribute - at index 1
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	//texture attributes - at index 1
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-
-	//texture attributes - at index 2
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
 
 
 
@@ -134,11 +112,11 @@ int main() {
 	glBindTexture(GL_TEXTURE_2D, texture1);
 
 	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	if (data) {
 		//first 0 signifies the minmap level
@@ -152,7 +130,7 @@ int main() {
 	//image object cleanup
 	stbi_image_free(data);
 
-
+	//texture 2
 	glGenTextures(1, &texture2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
@@ -181,18 +159,12 @@ int main() {
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	
 	
-
+	//activate our shader
 	ourShader.use();
 
 	//uniforms stuff
 	ourShader.setInt("texture1", 0);
 	ourShader.setInt("texture2", 1);
-	//getting the transform uniform location 
-	//and sending our defined matrix data
-	//unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-	// 1 is the number of matrices we are trying to send
-	//third argument asks for matrix transpose (row/column swap)
-	//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 	
 
 	//render loop
@@ -212,23 +184,24 @@ int main() {
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
-		//spinning image thing in real time
-		glm::mat4 transform = glm::mat4(1.0f);
-		//transformation are read in reverse
-		//(so its first rotated and then translated to bottom left)
-		transform = glm::translate(transform, glm::vec3(0.5, -0.5f, 0.0f));
-		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 		
-		//using shader object program
-		ourShader.use();
-		//setting transform uniform
+
+		glm::mat4 transform = glm::mat4(1.0f);
+
+		//first container
+		transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 		unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-		ourShader.setFloat("mixVal", mixVal);
 		glBindVertexArray(VAO);
-		//draw square
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+		//second container
+		transform = glm::mat4(1.0f);
+		transform = glm::translate(transform, glm::vec3(0.5f, 0.5f, 0.0f));
+		transform = glm::scale(transform, glm::vec3(sin(float(glfwGetTime())), sin(float(glfwGetTime())), 0.0f));
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 
 		// glfw: swap buffers and poll IO events
@@ -239,7 +212,7 @@ int main() {
 	//clean up
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	
+	glDeleteBuffers(1, &EBO);
 
 	glfwTerminate();
 	return 0;
@@ -250,18 +223,6 @@ int main() {
 void processInput(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
-	}
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-		mixVal += 0.01f;
-		if (mixVal >= 1.0f) {
-			mixVal = 1.0;
-		}
-	}
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-		mixVal -= 0.01f;
-		if (mixVal <= 0.0f) {
-			mixVal = 0.0;
-		}
 	}
 }
 
