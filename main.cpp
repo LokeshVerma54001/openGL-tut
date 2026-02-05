@@ -85,6 +85,9 @@ int main() {
 	unsigned int VAO; //vertex array object
 	//unsigned int EBO; //element buffer object
 
+	
+	
+
 
 	glfwInit(); // inits the glfw window
 	//telling glfw the major and minor version of openGl 
@@ -200,6 +203,18 @@ int main() {
 	//---------------------------------------------
 
 
+
+	//camera calculations-------------------------------------------
+	//glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+	//glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+	//normalize returns a unit vector in same direction as the input
+	//glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+	//glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+	//cross product returns the right angle formed by two vectors
+	//glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+	//glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+
+	
 	
 
 	// uncomment this call to draw in wireframe polygons.
@@ -216,6 +231,10 @@ int main() {
 
 	//enable depth test 
 	glEnable(GL_DEPTH_TEST);
+
+	//because projection is static we only set it once outside render loop
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	ourShader.setMat4("projection", projection);
 
 	//render loop
 	while (!glfwWindowShouldClose(window)) {
@@ -237,14 +256,20 @@ int main() {
 		ourShader.use();
 
 
-		//uniform mat4 calculations
+		//camera/view transformations
 		glm::mat4 view = glm::mat4(1.0f);
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		//setting uniform values
+		float radius = 20.0f;
+		//calculating cam variables for rotation around objects
+		float camX = static_cast<float>(sin(glfwGetTime()) * radius);
+		float camZ = static_cast<float>(cos(glfwGetTime()) * radius);
+		//parameters: position, target, up
+		view = glm::lookAt(
+			glm::vec3(camX, 0.0f, camZ),
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 1.0f, 0.0f)
+		);
 		ourShader.setMat4("view", view);
-		ourShader.setMat4("projection", projection);
+
 
 		//drawing the cube
 		glBindVertexArray(VAO);
