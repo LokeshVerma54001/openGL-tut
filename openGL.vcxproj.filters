@@ -51,5 +51,11 @@
     <None Include="shaders\shader.fs">
       <Filter>shaders</Filter>
     </None>
+    <None Include="shaders\light_cube.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\light_cube.vs">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

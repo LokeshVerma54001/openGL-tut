@@ -148,6 +148,8 @@
     <ClInclude Include="shader_s.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\light_cube.fs" />
+    <None Include="shaders\light_cube.vs" />
     <None Include="shaders\shader.fs" />
     <None Include="shaders\shader.vs" />
   </ItemGroup>

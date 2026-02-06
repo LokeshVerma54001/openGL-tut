@@ -1,3 +1,3 @@
 ﻿  main.cpp
-C:\code\openGL\main.cpp(253,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\code\openGL\main.cpp(181,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   openGL.vcxproj -> C:\code\openGL\x64\Debug\openGL.exe

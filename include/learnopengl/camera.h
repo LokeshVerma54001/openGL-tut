@@ -11,7 +11,9 @@ enum Camera_Movement
 	FORWARD,
 	BACKWARD,
 	LEFT,
-	RIGHT
+	RIGHT,
+	UP,
+	DOWN
 };
 
 //devault values variables
@@ -63,7 +65,7 @@ public:
 
 	//keyboard inputs handle
 	void ProcessKeyboard(Camera_Movement direction, float deltaTime)
-	{
+	{	
 		float velocity = MovementSpeed * deltaTime;
 		if (direction == FORWARD)
 			Position += Front * velocity;
@@ -73,6 +75,13 @@ public:
 			Position -= Right * velocity;
 		if (direction == RIGHT)
 			Position += Right * velocity;
+		if (direction == UP)
+			Position += WorldUp * velocity;
+		if (direction == DOWN)
+			Position -= WorldUp * velocity;
+		//makes sure the camera stays same on y axis
+		//to make the cam more like fps game (exercise practice)
+		//Position.y = 0.0f;
 	}
 
 	//calculate mouse movement 
