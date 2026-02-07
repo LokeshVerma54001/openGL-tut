@@ -9,6 +9,7 @@ uniform vec3 viewPos;
 
 in vec3 Normal;
 in vec3 FragPos;
+in vec3 LightPos;
 
 
 void main(){
@@ -20,7 +21,7 @@ void main(){
     //calculating diffused light
     vec3 norm = normalize(Normal);
     //wecalculate light directinon with this
-    vec3 lightDir = normalize(lightPos - FragPos);
+    vec3 lightDir = normalize(LightPos - FragPos);
     //in dot product the larger the angle the lower value it returns
     //we take the max value because value after 90deg becomes negetive in dot product
     float diff = max(dot(norm, lightDir), 0.0);

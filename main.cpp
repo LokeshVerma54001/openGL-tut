@@ -220,7 +220,7 @@ int main() {
 		lightCubeShader.setMat4("view", view);
 		model = glm::mat4(1.0f);
 		//moving light around
-		//lightPos = glm::vec3(cos(glfwGetTime()) * 2.0f, 1.0f, sin(glfwGetTime()) * 2.0f);
+		lightPos = glm::vec3(cos(glfwGetTime()) * 2.0f, 1.0f, sin(glfwGetTime()) * 2.0f);
 		model = glm::translate(model, lightPos);
 		model = glm::scale(model, glm::vec3(0.2f));// a smaller cube
 		lightCubeShader.setMat4("model", model);
