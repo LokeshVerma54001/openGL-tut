@@ -120,9 +120,10 @@
               "RelativeDocumentMoniker": "shaders\\shader.vs",
               "ToolTip": "C:\\code\\openGL\\shaders\\shader.vs",
               "RelativeToolTip": "shaders\\shader.vs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABcAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAAAQAAAAAAAAAAADwvx8AAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-02-03T15:46:14.184Z"
+              "WhenOpened": "2026-02-03T15:46:14.184Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -132,7 +133,7 @@
               "RelativeDocumentMoniker": "shaders\\shader.fs",
               "ToolTip": "C:\\code\\openGL\\shaders\\shader.fs",
               "RelativeToolTip": "shaders\\shader.fs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-02-03T15:46:02.104Z",
               "EditorCaption": ""
