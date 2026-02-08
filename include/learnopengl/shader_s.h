@@ -123,6 +123,13 @@ public:
 		);
 	}
 
+	void setVec3(const string& name, float x, float y, float z) const {
+		glUniform3f(
+			glGetUniformLocation(ID, name.c_str()),
+			x, y, z
+		);
+	}
+
 };
 
 #endif
