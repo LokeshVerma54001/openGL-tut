@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Users\HP\Downloads\glfw-3.4\include\GLFW\glfw3.h" />
     <ClInclude Include="include\learnopengl\camera.h" />
+    <ClInclude Include="include\learnopengl\texture_loader.h" />
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="shader_s.h" />
   </ItemGroup>
